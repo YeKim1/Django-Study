@@ -17,10 +17,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from user.views import * 
+from post.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('signup/', Signup.as_view()),
     path('login/', Login.as_view()),
-    path('myinfo/', MyInfo.as_view())
+    path('myinfo/', MyInfo.as_view()),
+    path('postAPI/', PostAPI.as_view()),
+    path('commentAPI/', CommentAPI.as_view()),
+    path('Q1/', Q1.as_view()),
+    path('Q2/', Q2.as_view()),
+    path('Q3/', Q3.as_view()),
+    path('Q4/', Q4.as_view()),
+    path('Q5/', Q5.as_view()),
+    path('Q6/', Q6.as_view()),
 ]

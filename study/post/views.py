@@ -72,6 +72,7 @@ class CommentAPI(APIView):
         
 # ------------ 여기서부터 과제 정답 ------------
 # 카테고리를 이름으로 받는다고 가정했습니다!! id로 받아와도 OK
+# 코드에 정답은 없습니다~~~ 결과만 정확하면 다 정답이에요
 
 # 1. '카테고리별' 게시글 작성
 class Q1(APIView):
@@ -84,7 +85,7 @@ class Q1(APIView):
         post.writer = request.user
         
         # 존재하는 Category일 때
-        if (Category.objects.exists(name = request.data["category"])):
+        if (Category.objects.filter(name = request.data["category"])):
             # 일치하는 Category를 찾아서 post에 저장
             post.category = Category.objects.get(name = request.data["category"])
         
@@ -129,7 +130,7 @@ class Q4(APIView):
         comments = Comment.objects.filter(writer = request.user)
 
         commentSerializer = CommentSerializer(comments, many=True)
-        return Response(commentSerializer, many=True)
+        return Response(commentSerializer.data, status=200)
     
 # 5. '특정 유저'가 작성한 댓글 조회
 class Q5(APIView):
@@ -138,7 +139,7 @@ class Q5(APIView):
         user = User.objects.get(id = request.data["id"])
         comments = Comment.objects.filter(writer = user)
         commentSerializer = CommentSerializer(comments, many=True)
-        return Response(commentSerializer, status=200)
+        return Response(commentSerializer.data, status=200)
 
 # 6. 게시글 좋아요 기능
 class Q6(APIView):
@@ -147,7 +148,7 @@ class Q6(APIView):
         post = Post.objects.get(id = request.data["id"])
 
         # 이미 눌렀으면 취소
-        if request.user in post.like:
+        if request.user in post.like.all():
             post.like.remove(request.user)
         
         # 안 눌렀으면 추가
