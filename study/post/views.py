@@ -16,6 +16,7 @@ class PostAPI(APIView):
         post.title = request.data["title"]
         post.content = request.data["content"]
         post.writer = request.user # 현재 로그인 중인 유저
+        # category를 지정해주지 않아서 에러가 발생시 Q1 코드를 참고해주세요!
         post.save()
 
         # Serializer를 이용해서 post의 정보를 JSON으로 변환해서 반환
@@ -36,7 +37,7 @@ class PostAPI(APIView):
     def put(self, request):
         
         # id로 Post 조회
-        post = Post.objects.filter(id = request.data[id])
+        post = Post.objects.get(id = request.data["id"])
 
         # 데이터 수정
         post.title = request.data["title"]
@@ -51,7 +52,7 @@ class PostAPI(APIView):
     def delete(self, request):
 
         # id로 Post 조회
-        post = Post.objects.filter(id = request.data[id])
+        post = Post.objects.get(id = request.data["id"])
 
         # 삭제
         post.delete()
