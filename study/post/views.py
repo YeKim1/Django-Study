@@ -16,7 +16,7 @@ class PostAPI(APIView):
         post.title = request.data["title"]
         post.content = request.data["content"]
         post.writer = request.user # 현재 로그인 중인 유저
-        # category를 지정해주지 않아서 에러가 발생시 Q1 코드를 참고해주세요!
+        # category를 지정해주지 않아서 에러 발생시 Q1 코드를 참고해주세요!
         post.save()
 
         # Serializer를 이용해서 post의 정보를 JSON으로 변환해서 반환
