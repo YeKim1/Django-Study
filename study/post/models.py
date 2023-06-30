@@ -22,7 +22,7 @@ class Post(models.Model):
 
     # 외래키
     writer = models.ForeignKey(User, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
 
     # 다대다 (좋아요)
     like = models.ManyToManyField(User, blank=True, related_name="like_table")

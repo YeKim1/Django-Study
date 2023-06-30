@@ -15,11 +15,31 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
 from user.views import * 
 from post.views import *
 
+# Swagger 설정
+from rest_framework.permissions import AllowAny
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title = "Swagger 타이틀 작성",
+        default_version = "v1",
+        description = "Swagger를 사용한 API 문서입니다",
+    ),
+    public=True,
+    permission_classes=(AllowAny,),
+    
+)
+
 urlpatterns = [
+    # Swagger url
+    re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
+    re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+
     path('admin/', admin.site.urls),
     path('signup/', Signup.as_view()),
     path('login/', Login.as_view()),
@@ -32,4 +52,7 @@ urlpatterns = [
     path('Q4/', Q4.as_view()),
     path('Q5/', Q5.as_view()),
     path('Q6/', Q6.as_view()),
+    
+
 ]
+

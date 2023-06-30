@@ -5,10 +5,17 @@ from .models import Post, Category, Comment
 from user.models import User
 from .serializers import PostSerializer, CommentSerializer
 
+# Swagger 설정
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+
 class PostAPI(APIView):
+
     # Post 작성 (Create)
-    # request = [title, content]
+    # request = [title, content]   
     def post(self, request):
+        # category 설정이 없어서 에러납니다.. 코드 참고만 해주세용
+
         # 빈 Post 객체 생성
         post = Post()
 
@@ -16,7 +23,6 @@ class PostAPI(APIView):
         post.title = request.data["title"]
         post.content = request.data["content"]
         post.writer = request.user # 현재 로그인 중인 유저
-        # category를 지정해주지 않아서 에러 발생시 Q1 코드를 참고해주세요!
         post.save()
 
         # Serializer를 이용해서 post의 정보를 JSON으로 변환해서 반환
@@ -76,8 +82,25 @@ class CommentAPI(APIView):
 # 코드에 정답은 없습니다~~~ 결과만 정확하면 다 정답이에요
 
 # 1. '카테고리별' 게시글 작성
+
+
 class Q1(APIView):
     # request = [title, content, category]
+    @swagger_auto_schema(
+        tags = ['Tags'],
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'title': openapi.Schema(type=openapi.TYPE_STRING, description="제목"),
+                'content': openapi.Schema(type=openapi.TYPE_STRING, description="내용"),
+                'category': openapi.Schema(type=openapi.TYPE_STRING, description="카테고리 이름")
+            }
+        ),
+        responses = {
+            200: openapi.Response('생성된 POST 정보', PostSerializer),
+            403: '인증 오류'
+        }
+    )
     def post(self, request):
         post = Post()
 
