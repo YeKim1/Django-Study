@@ -26,8 +26,11 @@ class Login(APIView):
             return Response({"message": "유저 정보가 없습니다"}, status = 403)
 
 class Logout(APIView):
-    def post(self, request):
-        auth.logout(request.user)
+    def get(self, request):
+        if request.user is not None: auth.logout(request.user)
+        else: 
+            return Response({"message": "유저 정보 없음"}, status=403)
+
 
 class MyInfo(APIView):
     def get(self, request):
