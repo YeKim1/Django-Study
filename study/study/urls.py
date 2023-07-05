@@ -43,6 +43,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('signup/', Signup.as_view()),
     path('login/', Login.as_view()),
+    path('logut/', Logout.as_view()),
     path('myinfo/', MyInfo.as_view()),
     path('postAPI/', PostAPI.as_view()),
     path('commentAPI/', CommentAPI.as_view()),
